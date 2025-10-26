@@ -1,7 +1,6 @@
-package com.newshop.dream_shop.infrastructure.entities;
+package com.newshop.dream_shop.domain.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

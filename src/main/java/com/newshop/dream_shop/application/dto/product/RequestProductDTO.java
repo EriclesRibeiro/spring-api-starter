@@ -1,4 +1,4 @@
-package com.newshop.dream_shop.infrastructure.dto.product;
+package com.newshop.dream_shop.application.dto.product;
 
 import java.math.BigDecimal;
 
