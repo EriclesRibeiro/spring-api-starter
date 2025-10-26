@@ -10,6 +10,6 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 
     List<ProductEntity> findByNameContainingIgnoreCase(String name);
 
-    List<ProductEntity> findByPriceGreaterThen(BigDecimal price);
+    List<ProductEntity> findByPriceGreaterThan(BigDecimal price);
 
 }
