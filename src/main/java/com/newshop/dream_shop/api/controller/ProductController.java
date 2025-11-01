@@ -2,6 +2,7 @@ package com.newshop.dream_shop.api.controller;
 
 import com.newshop.dream_shop.application.dto.product.RequestProductDTO;
 import com.newshop.dream_shop.application.dto.product.ResponseProductDTO;
+import com.newshop.dream_shop.application.exception.Response;
 import com.newshop.dream_shop.application.mapper.ProductMapper;
 import com.newshop.dream_shop.application.service.product.IProductService;
 import com.newshop.dream_shop.domain.entity.ProductEntity;
@@ -27,26 +28,26 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ResponseProductDTO>> findAllProducts() {
+    public ResponseEntity<Response<List<ResponseProductDTO>>> findAllProducts() {
 
         List<ResponseProductDTO> productResponse = productService.findAll()
                 .stream()
                 .map(productMapper::toResponse)
                 .toList();
-        return ResponseEntity.ok(productResponse);
+        return ResponseEntity.ok(Response.success(productResponse));
 
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseProductDTO> findProductById(@PathVariable Long id) {
+    public ResponseEntity<Response<ResponseProductDTO>> findProductById(@PathVariable Long id) {
 
         ProductEntity product = productService.findById(id);
-        return ResponseEntity.ok().body(productMapper.toResponse(product));
+        return ResponseEntity.ok().body(Response.success(productMapper.toResponse(product)));
 
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<ResponseProductDTO>> findProductByName(@RequestParam String name) {
+    public ResponseEntity<Response<List<ResponseProductDTO>>> findProductByName(@RequestParam String name) {
 
         List<ProductEntity> productEntities = productService.findByName(name);
         List<ResponseProductDTO> products = productEntities
@@ -54,20 +55,20 @@ public class ProductController {
                 .map(productMapper::toResponse)
                 .toList();
 
-        return ResponseEntity.ok(products);
+        return ResponseEntity.ok(Response.success(products));
 
     }
 
     @PostMapping
-    public ResponseEntity<ResponseProductDTO> createProduct(@RequestBody @Valid RequestProductDTO product) {
+    public ResponseEntity<Response<ResponseProductDTO>> createProduct(@RequestBody @Valid RequestProductDTO product) {
 
         ProductEntity newProduct = productService.save(product);
-        return ResponseEntity.status(HttpStatus.CREATED).body(productMapper.toResponse(newProduct));
+        return ResponseEntity.status(HttpStatus.CREATED).body(Response.success(productMapper.toResponse(newProduct)));
 
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<Response<Void>> deleteProduct(@PathVariable Long id) {
 
         productService.delete(id);
         return ResponseEntity.noContent().build();
@@ -75,10 +76,10 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseProductDTO> updateProduct(@PathVariable Long id, @RequestBody @Valid RequestProductDTO product) {
+    public ResponseEntity<Response<ResponseProductDTO>> updateProduct(@PathVariable Long id, @RequestBody @Valid RequestProductDTO product) {
 
         ProductEntity updatedProduct = productService.update(id, product);
-        return ResponseEntity.ok(productMapper.toResponse(updatedProduct));
+        return ResponseEntity.ok(Response.success(productMapper.toResponse(updatedProduct)));
 
     }
 

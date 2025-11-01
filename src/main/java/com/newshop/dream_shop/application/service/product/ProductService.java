@@ -1,7 +1,7 @@
 package com.newshop.dream_shop.application.service.product;
 
 import com.newshop.dream_shop.application.dto.product.RequestProductDTO;
-import com.newshop.dream_shop.application.exceptions.NotFoundException;
+import com.newshop.dream_shop.application.exception.NotFoundException;
 import com.newshop.dream_shop.application.mapper.ProductMapper;
 import com.newshop.dream_shop.domain.entity.ProductEntity;
 import com.newshop.dream_shop.infrastructure.repository.ProductRepository;

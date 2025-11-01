@@ -1,4 +1,4 @@
-package com.newshop.dream_shop.application.exceptions;
+package com.newshop.dream_shop.application.exception;
 
 public class NotFoundException extends RuntimeException {
     public NotFoundException(String message) {
