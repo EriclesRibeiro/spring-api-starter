@@ -12,7 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 @Service
 @RequiredArgsConstructor
@@ -37,8 +37,45 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductEntity> findByName(String name) {
-        return productRepository.findByNameContainingIgnoreCase(name);
+    public PagedResponse<ResponseProductDTO> findByName(Pageable pageable, String name) {
+        Page<ProductEntity> page = productRepository.findByNameContainingIgnoreCase(name);
+
+        return PagedResponse.<ResponseProductDTO>builder()
+                .items(page.getContent().stream().map(productMapper::toResponse).toList())
+                .page(page.getNumber())
+                .size(page.getSize())
+                .totalItems(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .lastPage(page.isLast())
+                .build();
+    }
+
+    @Override
+    public PagedResponse<ResponseProductDTO> findByPriceLowerThan(Pageable pageable, BigDecimal price) {
+        Page<ProductEntity> page = productRepository.findByPriceLowerThan(price);
+
+        return PagedResponse.<ResponseProductDTO>builder()
+                .items(page.getContent().stream().map(productMapper::toResponse).toList())
+                .page(page.getNumber())
+                .size(page.getSize())
+                .totalItems(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .lastPage(page.isLast())
+                .build();
+    }
+
+    @Override
+    public PagedResponse<ResponseProductDTO> findByPriceGreaterThan(Pageable pageable, BigDecimal price) {
+        Page<ProductEntity> page = productRepository.findByPriceGreaterThan(price);
+
+        return PagedResponse.<ResponseProductDTO>builder()
+                .items(page.getContent().stream().map(productMapper::toResponse).toList())
+                .page(page.getNumber())
+                .size(page.getSize())
+                .totalItems(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .lastPage(page.isLast())
+                .build();
     }
 
     @Override

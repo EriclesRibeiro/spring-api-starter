@@ -8,6 +8,7 @@ import com.newshop.dream_shop.application.mapper.ProductMapper;
 import com.newshop.dream_shop.application.service.product.ProductService;
 import com.newshop.dream_shop.domain.entity.ProductEntity;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,17 +18,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
+@RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
     private final ProductMapper productMapper;
-
-    public ProductController(ProductService productService, ProductMapper productMapper) {
-
-        this.productService = productService;
-        this.productMapper = productMapper;
-
-    }
 
     @GetMapping
     public ResponseEntity<Response<PagedResponse<ResponseProductDTO>>> findAllProducts(Pageable pageable) {
@@ -46,13 +41,9 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Response<List<ResponseProductDTO>>> findProductByName(@RequestParam String name) {
+    public ResponseEntity<Response<PagedResponse<ResponseProductDTO>>> findProductByName(@RequestParam String name, Pageable pageable) {
 
-        List<ProductEntity> productEntities = productService.findByName(name);
-        List<ResponseProductDTO> products = productEntities
-                .stream()
-                .map(productMapper::toResponse)
-                .toList();
+        PagedResponse<ResponseProductDTO> products = productService.findByName(pageable, name);
 
         return ResponseEntity.ok(Response.success(products));
 
