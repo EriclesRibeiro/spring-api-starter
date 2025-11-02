@@ -1,12 +1,14 @@
 package com.newshop.dream_shop.api.controller;
 
+import com.newshop.dream_shop.application.dto.PagedResponse;
 import com.newshop.dream_shop.application.dto.product.RequestProductDTO;
 import com.newshop.dream_shop.application.dto.product.ResponseProductDTO;
-import com.newshop.dream_shop.application.exception.Response;
+import com.newshop.dream_shop.application.dto.Response;
 import com.newshop.dream_shop.application.mapper.ProductMapper;
-import com.newshop.dream_shop.application.service.product.IProductService;
+import com.newshop.dream_shop.application.service.product.ProductService;
 import com.newshop.dream_shop.domain.entity.ProductEntity;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +19,10 @@ import java.util.List;
 @RequestMapping("/api/products")
 public class ProductController {
 
-    private final IProductService productService;
+    private final ProductService productService;
     private final ProductMapper productMapper;
 
-    public ProductController(IProductService productService, ProductMapper productMapper) {
+    public ProductController(ProductService productService, ProductMapper productMapper) {
 
         this.productService = productService;
         this.productMapper = productMapper;
@@ -28,12 +30,9 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<Response<List<ResponseProductDTO>>> findAllProducts() {
+    public ResponseEntity<Response<PagedResponse<ResponseProductDTO>>> findAllProducts(Pageable pageable) {
 
-        List<ResponseProductDTO> productResponse = productService.findAll()
-                .stream()
-                .map(productMapper::toResponse)
-                .toList();
+        PagedResponse<ResponseProductDTO> productResponse = productService.findAll(pageable);
         return ResponseEntity.ok(Response.success(productResponse));
 
     }

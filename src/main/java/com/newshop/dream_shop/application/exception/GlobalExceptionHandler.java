@@ -1,5 +1,7 @@
 package com.newshop.dream_shop.application.exception;
 
+import com.newshop.dream_shop.application.dto.Response;
+import com.newshop.dream_shop.application.dto.ResponseError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

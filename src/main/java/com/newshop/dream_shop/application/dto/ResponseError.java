@@ -1,4 +1,4 @@
-package com.newshop.dream_shop.application.exception;
+package com.newshop.dream_shop.application.dto;
 
 import lombok.Getter;
 
